@@ -16,9 +16,10 @@ namespace ToDoList.Infrastructure.Classes
             _repositories = [];
         }
 
-        public async Task<int> CommitAsync()
+        public async Task<bool> CommitAsync()
         {
-            return await _context.SaveChangesAsync();
+            SetUpdatedAt();
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public IGenericRepository<TAggregateRoot> Repository<TAggregateRoot>() where TAggregateRoot : AggregateRoot
@@ -33,6 +34,17 @@ namespace ToDoList.Infrastructure.Classes
             _repositories.Add(typeof(TAggregateRoot), repositorioAdicionar);
 
             return repositorioAdicionar;
+        }
+
+        private void SetUpdatedAt()
+        {
+            var entries = _context.ChangeTracker.Entries<Entity>()
+                .Where(e => e.State == EntityState.Modified);
+
+            foreach (var entry in entries)
+            {
+                entry.Entity.SetUpdatedAt();
+            }
         }
 
     }

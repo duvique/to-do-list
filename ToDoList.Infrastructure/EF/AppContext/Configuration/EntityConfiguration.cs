@@ -15,6 +15,8 @@ namespace ToDoList.Infrastructure.EF.AppContext.Configuration
             builder.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .IsRequired();
+
+            builder.HasKey(e => e.Id);
         }
     }
     public class EntityConfiguration<TEntity, TIdentifier> : IEntityTypeConfiguration<TEntity>

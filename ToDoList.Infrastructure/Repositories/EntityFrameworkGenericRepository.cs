@@ -60,9 +60,12 @@ namespace ToDoList.Infrastructure.Repositories
 
             return true;
         }
-        public Task UpdateAsync(TAggregateRoot entity, CancellationToken cancellationToken)
+        public async Task UpdateAsync(TAggregateRoot entity, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
         }
         public async Task DeleteAsync(TAggregateRoot entity, CancellationToken cancellationToken)
         {

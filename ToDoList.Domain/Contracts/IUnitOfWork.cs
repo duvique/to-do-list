@@ -4,7 +4,7 @@ namespace ToDoList.Domain.Contracts
 {
     public interface IUnitOfWork
     {
-        Task<int> CommitAsync();
+        Task<bool> CommitAsync();
         IGenericRepository<TAggregateRoot> Repository<TAggregateRoot>() where TAggregateRoot : AggregateRoot;
     }
 }

@@ -14,11 +14,6 @@ namespace ToDoList.Infrastructure.EF.AppContext.Configuration
                 .HasConversion(
                     v => v.ToString(),
                     v => (EVisibilityType)Enum.Parse(typeof(EVisibilityType), v));
-
-            builder.HasOne(t => t.User)
-                .WithMany(u => u.Tasks)
-                .HasForeignKey(t => t.UserId)
-                .IsRequired();
         }
     }
 }

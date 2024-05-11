@@ -6,7 +6,16 @@ namespace ToDoList.Application
     {
         public static IServiceCollection ConfigureApplication(this IServiceCollection services)
         {
-            return services;
+            return services
+                .ConfigureMediatR();
+        }
+
+        internal static IServiceCollection ConfigureMediatR(this IServiceCollection services)
+        {
+            return services.AddMediatR(configuration =>
+            {
+                configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+            });
         }
     }
 }

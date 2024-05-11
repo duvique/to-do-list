@@ -5,8 +5,7 @@ namespace ToDoList.Infrastructure.EF.AppContext
 {
     internal class AppContext(DbContextOptions<AppContext> options) : DbContext(options)
     {
-        public DbSet<Task> Tasks { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<ToDoTask> Tasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

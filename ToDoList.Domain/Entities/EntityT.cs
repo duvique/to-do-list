@@ -13,5 +13,10 @@
                 ? new TIdentifier()
                 : id;
         }
+
+        public void SetUpdatedAt()
+        {
+            UpdatedAt = DateTime.Now;
+        }
     }
 }

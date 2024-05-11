@@ -16,9 +16,7 @@ namespace ToDoList.Infrastructure.EF.Extensions
                 .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
             builder.Property(e => e.UpdatedAt)
-                .ValueGeneratedOnAddOrUpdate()
-                .IsConcurrencyToken()
-                .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+                .IsConcurrencyToken();
 
             return builder;
         }
