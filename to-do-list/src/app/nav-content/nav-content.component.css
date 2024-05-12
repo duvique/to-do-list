@@ -1,0 +1,6 @@
+.nav-content-container{
+  display: flex;
+  flex-direction: column;
+  padding: 1m;
+  min-width: 500px;
+}
