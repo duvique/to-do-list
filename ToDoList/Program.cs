@@ -1,13 +1,15 @@
 using ToDoList.Infrastructure;
 using ToDoList.Application;
+using ToDoList.API;
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.ConfigureCors();
 
 builder.Services.ConfigureInfrastructure(builder.Configuration);
 builder.Services.ConfigureApplication();
@@ -22,6 +24,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCorsAllowAll();
 
 app.UseAuthorization();
 
