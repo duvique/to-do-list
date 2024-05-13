@@ -1,4 +1,12 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  output,
+} from '@angular/core';
 import { TaskService } from '../services/task.service';
 import { Task } from '../interfaces/Tasks/task';
 import { CommonModule, NgIf } from '@angular/common';
@@ -61,6 +69,8 @@ export class TaskDetailComponent {
     console.log(this._createTask);
   }
 
+  @Output() refreshTaskList = new EventEmitter<boolean>();
+
   constructor(private taskService: TaskService, private fb: FormBuilder) {
     this.taskForm = this.fb.group({
       name: new FormControl('', [Validators.required]),
@@ -113,14 +123,13 @@ export class TaskDetailComponent {
 
   deleteTask() {
     if (this._taskId == null) return;
-    this.blockFinishButton = true;
+
     this.taskService.deleteTask(this._taskId!).subscribe({
       next: (response) => {
-        if (response) this.handleChangeTaskId();
+        if (response) this.refreshTaskList.emit(true);
       },
       error: (error) => {
         console.log({ error });
-        this.blockFinishButton = false;
       },
       complete: () => {
         this.blockFinishButton = false;

@@ -32,6 +32,11 @@ export class TasksComponent implements OnInit {
     this.getAllTasks();
   }
 
+  refreshTaskList() {
+    this.createTask = false;
+    this.idTaskDetail = null;
+    this.getAllTasks();
+  }
   getAllTasks() {
     this.taskService.getTasks().subscribe({
       next: (response) => {
