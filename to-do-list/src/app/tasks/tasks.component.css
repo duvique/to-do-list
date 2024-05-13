@@ -1,0 +1,73 @@
+.tasks-container{
+  display: flex;
+  height: 100%;
+  align-items: stretch;
+}
+
+.tasks-list{
+  display: flex;
+  flex-grow: 2;
+  flex-direction: column;
+  gap: 5rem;
+  padding: 3em;
+  background-color: rgba(10, 10, 10, 0.5);;
+}
+
+.tasks-title{
+  display: flex;
+  gap: 4em;
+  align-items: center;
+  justify-content: start;
+}
+
+.tasks-title h1{
+  margin: 0;
+  font-size: 4em;
+}
+.tasks-title p{
+  margin: 0;
+  font-size: 2.5em;
+  border: 2px solid white;
+  padding: 0 0.2em;
+  border-style: none solid;
+  font-weight: bold;
+}
+
+.tasks-table{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+}
+
+.task-add{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.list-item{
+  display: flex;
+  border:  2px solid grey;
+  border-style: none none solid none;
+  padding :2em 0;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-item p{
+  margin: 0;
+  font-size: 1.5em;
+}
+
+
+.task-detail{
+  padding:  4em;
+  width: 50%;
+  flex-grow: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+}

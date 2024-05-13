@@ -1,1 +1,35 @@
-<p>tasks works!</p>
+<section class="tasks-container">
+  <div class="tasks-list">
+    <div class="tasks-title">
+      <h1>Tasks</h1>
+      <p>{{ this.tasks.length }}</p>
+    </div>
+
+    <article class="tasks-table">
+      <div class="list-item">
+        <button mat-button class="task-add" (click)="showCreateTask()">
+          <mat-icon>add</mat-icon>
+          <p>Add new Task</p>
+        </button>
+      </div>
+      @for (item of tasks; track $index) {
+      <div class="list-item">
+        <p>{{ item.name }}</p>
+        <button
+          mat-icon-button
+          (click)="showTaskDetail(item.id)"
+          [ngStyle]="{ color: idTaskDetail == item.id ? 'white' : 'gray' }"
+        >
+          <mat-icon>arrow_forward_ios</mat-icon>
+        </button>
+      </div>
+      }
+    </article>
+  </div>
+  <div class="task-detail" *ngIf="idTaskDetail != null || createTask">
+    <app-task-detail
+      [taskId]="idTaskDetail"
+      [createTask]="createTask"
+    ></app-task-detail>
+  </div>
+</section>

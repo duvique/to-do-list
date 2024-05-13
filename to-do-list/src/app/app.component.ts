@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NavContentComponent } from './nav-content/nav-content.component';
-
+import { environment } from '../environments/environment';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -17,4 +17,7 @@ import { NavContentComponent } from './nav-content/nav-content.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  constructor(){
+    console.log(environment.production)
+  }
 }

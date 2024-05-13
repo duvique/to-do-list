@@ -1,0 +1,118 @@
+<section class="task-detail-container">
+  <form
+    [formGroup]="taskForm"
+    class="task-card"
+    *ngIf="_createTask || task; else loading"
+    (ngSubmit)="onSubmit()"
+    autocomplete="off"
+  >
+    <div>
+      <div class="task-card-title">
+        <h1>Task:</h1>
+        <mat-form-field [hideRequiredMarker]="true">
+          <mat-label>Name</mat-label>
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            placeholder="Name"
+            formControlName="name"
+            matInput
+            required
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="task-card-body">
+        <mat-form-field [hideRequiredMarker]="true">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            type="text"
+            id="description"
+            class="form-control"
+            placeholder="Description"
+            formControlName="description"
+            required
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
+        </mat-form-field>
+
+        <mat-form-field id="dueDateFormField">
+          <mat-label>Due Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <div class="task-visibility">
+          <mat-form-field>
+            <mat-label><mat-icon>visibility</mat-icon> Visibility</mat-label>
+            <mat-select
+              formControlName="visibility"
+              [value]="visibilities[0].value"
+              [disabled]="_createTask"
+            >
+              @for (visibility of visibilities; track visibility) {
+              <mat-option [value]="visibility.value">{{
+                visibility.label
+              }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="task-finish" *ngIf="task">
+          <div class="task-finish-info" *ngIf="task?.isFinished">
+            <mat-checkbox [disabled]="true" [checked]="task.isFinished"
+              >Finished</mat-checkbox
+            >
+            <mat-form-field id="finishedDateFormField">
+              <mat-label>Finished on</mat-label>
+              <input
+                matInput
+                formControlName="finishedOnDate"
+                [matDatepicker]="dpFinished"
+                [disabled]="true"
+              />
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="dpFinished"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #dpFinished></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <button
+            *ngIf="!task.isFinished"
+            mat-flat-button
+            [disabled]="blockFinishButton"
+            (click)="finishTask()"
+          >
+            <mat-icon>task</mat-icon>Complete Task
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-card-button">
+      <button
+        [color]="_createTask ? 'primary' : 'warn'"
+        class="action-button"
+        type="submit"
+        (click)="!_createTask ? deleteTask() : false"
+        mat-flat-button
+      >
+        {{ _createTask ? "Add" : "Delete" }}
+      </button>
+    </div>
+  </form>
+
+  <ng-template class="loading-container" #loading>
+    <mat-spinner></mat-spinner>
+  </ng-template>
+</section>
