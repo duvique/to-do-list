@@ -9,15 +9,26 @@ namespace ToDoList.Infrastructure.Classes
         where TDbContext : DbContext
     {
         private readonly Dictionary<Type, object> _repositories;
+        private readonly IDomainEventPublisher _publisher;
         private readonly TDbContext _context;
-        public EntityFrameworkUnitOfWork(TDbContext context)
+        public EntityFrameworkUnitOfWork(TDbContext context, IDomainEventPublisher publisher)
         {
             _context = context;
             _repositories = [];
+            _publisher = publisher;
         }
 
         public async Task<bool> CommitAsync()
         {
+            var domainEvents = _context.ChangeTracker.Entries<AggregateRoot>()
+                .SelectMany(e => e.Entity.DomainEvents);
+
+            // Publish Domain events within same transaction of aggregate root changes
+            foreach (var domainEvent in domainEvents)
+            {
+                await _publisher.Publish(domainEvent);
+            }
+
             SetUpdatedAt();
             return await _context.SaveChangesAsync() > 0;
         }
