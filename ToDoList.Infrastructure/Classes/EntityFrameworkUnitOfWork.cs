@@ -20,13 +20,26 @@ namespace ToDoList.Infrastructure.Classes
 
         public async Task<bool> CommitAsync()
         {
-            var domainEvents = _context.ChangeTracker.Entries<AggregateRoot>()
-                .SelectMany(e => e.Entity.DomainEvents);
+            var aggregates = _context.ChangeTracker.Entries<AggregateRoot>()
+                .Where(a => a.Entity.DomainEvents.Any())
+                .Select(a => a.Entity)
+                .ToArray() ?? [];
 
-            // Publish Domain events within same transaction of aggregate root changes
-            foreach (var domainEvent in domainEvents)
+            var domainEvents = aggregates?
+                .SelectMany(e => e.DomainEvents)
+                .ToArray() ?? [];
+
+            if (domainEvents.Length != 0)
             {
-                await _publisher.Publish(domainEvent);
+                foreach (var aggregate in aggregates!)
+                {
+                    aggregate.ClearDomainEvents();
+                }
+                // Publish Domain events within same transaction of aggregate root changes
+                foreach (var domainEvent in domainEvents)
+                {
+                    await _publisher.Publish(domainEvent);
+                }
             }
 
             SetUpdatedAt();

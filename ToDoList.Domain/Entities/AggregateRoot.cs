@@ -12,7 +12,7 @@ namespace ToDoList.Domain.Entities
         {
             _events.Add(domainEvent);
         }
-        protected void ClearDomainEvents()
+        public void ClearDomainEvents()
         {
             _events.Clear();
         }

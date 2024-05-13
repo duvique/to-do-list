@@ -12,6 +12,10 @@ namespace ToDoList.Domain.Entities
         public bool IsFinished { get; private set; }
         public DateTime? FinishedDate { get; private set; }
 
+        public ToDoTask()
+        {
+
+        }
         public ToDoTask(Guid id, string name, string description, EVisibilityType visibility, DateTime? dueDate) : base(id)
         {
             Name = name;
