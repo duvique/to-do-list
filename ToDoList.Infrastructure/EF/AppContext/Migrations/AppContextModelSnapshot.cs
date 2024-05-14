@@ -50,7 +50,6 @@ namespace ToDoList.Infrastructure.EF.AppContext.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Visibility")

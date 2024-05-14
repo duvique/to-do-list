@@ -12,7 +12,7 @@ using ToDoList.Infrastructure.EF.AppContext;
 namespace ToDoList.Infrastructure.EF.AppContext.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20240511183359_InitialImplementation")]
+    [Migration("20240514025408_InitialImplementation")]
     partial class InitialImplementation
     {
         /// <inheritdoc />
@@ -53,7 +53,6 @@ namespace ToDoList.Infrastructure.EF.AppContext.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Visibility")

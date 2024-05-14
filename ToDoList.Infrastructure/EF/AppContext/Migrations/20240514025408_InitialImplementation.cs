@@ -23,7 +23,7 @@ namespace ToDoList.Infrastructure.EF.AppContext.Migrations
                     IsFinished = table.Column<bool>(type: "bit", nullable: false),
                     FinishedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", rowVersion: true, nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
