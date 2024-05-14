@@ -16,7 +16,7 @@ Projeto feito em inglês
 # Backend
 1- Modificar `connection string` do SQL Server no `app.settings.json` do projeto `backend` de acordo com seu servidor <br>
 
-2- Para Preparar estrutura de tabelas do banco de dados temos 2 opções diferentes, já que foi utilizado Entity Framework para a construção da camada de acesso a dados: 
+2- Para Preparar estrutura de tabelas do banco de dados temos 2 opções diferentes, já que foi utilizado Entity Framework para a construção da camada de acesso a dados (escolha apenas uma das opções para evitar conflitos): 
   - Executar migration através do Entity Framework:
     - A migration já está criada na branch do projeto, é necessário apenas aplicá-la com o comando no console do `Gerenciador de Pacotes` do VS,
       caso ocorra algum erro na execução do comando use como referência a documentação em https://learn.microsoft.com/en-us/ef/core/cli/powershell
@@ -24,7 +24,7 @@ Projeto feito em inglês
       ```
         update-database
       ```
-    - Executar script `setupDatabase.sql` localizado na pasta raiz da branch `backend`. 
+  - Executar script `setupDatabase.sql` localizado na pasta raiz da branch `backend`. 
 
 3- A API pode ser inicializada normalmente com o projeto de incialização `ToDoList.API`
 
