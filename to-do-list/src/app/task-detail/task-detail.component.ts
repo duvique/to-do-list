@@ -27,6 +27,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Visibility } from '../interfaces/Tasks/EVisibility';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-task-detail',
@@ -49,11 +50,13 @@ import { Visibility } from '../interfaces/Tasks/EVisibility';
 })
 export class TaskDetailComponent {
   private _taskId: string | null = null;
+
   visibilities: { label: string; value: Visibility }[] = [
     { value: Visibility.Public, label: 'Public' },
     { value: Visibility.Private, label: 'Private' },
   ];
 
+  startDueTime: Date = new Date();
   _createTask: boolean = false;
   task?: Task;
   taskForm: FormGroup;
@@ -66,23 +69,33 @@ export class TaskDetailComponent {
 
   @Input() set createTask(value: boolean) {
     this._createTask = value;
-    console.log(this._createTask);
   }
 
   @Output() refreshTaskList = new EventEmitter<boolean>();
+  @Output() createdTaskId = new EventEmitter<string>();
 
-  constructor(private taskService: TaskService, private fb: FormBuilder) {
+  constructor(
+    private taskService: TaskService,
+    private fb: FormBuilder,
+    private toast: ToastrService
+  ) {
     this.taskForm = this.fb.group({
       name: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       visibility: new FormControl('', [Validators.required]),
-      dueDate: new FormControl(new Date()),
-      finishedOnDate: new FormControl({ disabled: true }),
+      dueDate: new FormControl(''),
+      isFinished: new FormControl(''),
+      finishedOnDate: new FormControl({ value: new Date(), disabled: true }),
     });
   }
 
   handleChangeTaskId() {
-    if (this._taskId == null) return;
+    if (this._taskId == null) {
+      this.task = undefined;
+      this.taskForm.reset();
+      this.taskForm.enable();
+      return;
+    }
 
     this.taskService.getTaskById(this._taskId!).subscribe({
       next: (response) => {
@@ -97,22 +110,29 @@ export class TaskDetailComponent {
           description: this.task?.description,
           visibility: this.task?.visibility,
           dueDate: this.task?.dueDate,
-          finished: this.task?.isFinished,
+          isFinished: this.task?.isFinished,
           finishedOnDate: this.task?.finishedDate,
         });
+
+        this.taskForm.disable();
       },
     });
   }
 
   finishTask() {
     if (this._taskId == null) return;
+
     this.blockFinishButton = true;
     this.taskService.finishTask(this._taskId!).subscribe({
       next: (response) => {
-        this.taskId == null;
+        if (response) {
+          this.toast.success('Task finished!');
+          this.refreshTaskList.emit(false);
+          this.handleChangeTaskId();
+        }
       },
       error: (error) => {
-        console.log({ error });
+        this.toast.error('An error ocurred. Try again later!');
         this.blockFinishButton = false;
       },
       complete: () => {
@@ -126,19 +146,37 @@ export class TaskDetailComponent {
 
     this.taskService.deleteTask(this._taskId!).subscribe({
       next: (response) => {
-        if (response) this.refreshTaskList.emit(true);
+        if (response) {
+          this.toast.success('Task deleted!');
+          this.refreshTaskList.emit(true);
+        }
       },
       error: (error) => {
-        console.log({ error });
-      },
-      complete: () => {
-        this.blockFinishButton = false;
+        this.toast.error('An error ocurred. Try again later!');
       },
     });
   }
 
   onSubmit() {
     if (this.taskForm.valid) {
+      const { name, description, dueDate, visibility } = this.taskForm.value;
+      this.taskService
+        .createTask({
+          name,
+          description,
+          dueDate,
+          visibility,
+        })
+        .subscribe({
+          next: (response) => {
+            this.toast.success('Task created :)');
+            this.refreshTaskList.emit(true);
+            this.createdTaskId.emit(response);
+          },
+          error: (error) => {
+            this.toast.error('An error ocurred. Try again later!');
+          },
+        });
     }
   }
 }

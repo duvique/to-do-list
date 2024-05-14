@@ -1,15 +1,18 @@
-<section class="task-detail-container">
+<section
+  class="task-detail-container"
+  [style.justify-content]="!task ? 'center' : ''"
+>
   <form
     [formGroup]="taskForm"
-    class="task-card"
+    class="task-form"
     *ngIf="_createTask || task; else loading"
-    (ngSubmit)="onSubmit()"
+    (ngSubmit)="!_createTask ? deleteTask() : onSubmit()"
     autocomplete="off"
   >
     <div>
-      <div class="task-card-title">
-        <h1>Task:</h1>
-        <mat-form-field [hideRequiredMarker]="true">
+      <div class="task-form-title">
+        <h1>{{ _createTask ? "New " : "" }}Task:</h1>
+        <mat-form-field [hideRequiredMarker]="!_createTask">
           <mat-label>Name</mat-label>
           <input
             type="text"
@@ -18,13 +21,17 @@
             placeholder="Name"
             formControlName="name"
             matInput
-            required
+            maxlength="40"
           />
+          @if (taskForm.get('name')?.hasError('required') &&
+          taskForm.get('name')?.touched) {
+          <mat-error>Please enter a valid name</mat-error>
+          }
         </mat-form-field>
       </div>
 
-      <div class="task-card-body">
-        <mat-form-field [hideRequiredMarker]="true">
+      <div class="task-form-body">
+        <mat-form-field [hideRequiredMarker]="!_createTask">
           <mat-label>Description</mat-label>
           <textarea
             matInput
@@ -33,30 +40,40 @@
             class="form-control"
             placeholder="Description"
             formControlName="description"
-            required
             cdkTextareaAutosize
             cdkAutosizeMinRows="1"
             cdkAutosizeMaxRows="5"
           ></textarea>
+          @if (taskForm.get('description')?.hasError('required') &&
+          taskForm.get('description')?.touched) {
+          <mat-error>Please enter a valid description</mat-error>
+          }
         </mat-form-field>
 
-        <mat-form-field id="dueDateFormField">
+        <mat-form-field
+          id="dueDateFormField"
+          *ngIf="_createTask || task?.dueDate"
+        >
           <mat-label>Due Date</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+          <input
+            matInput
+            [min]="startDueTime"
+            [matDatepicker]="picker"
+            formControlName="dueDate"
+          />
           <mat-datepicker-toggle
             matIconSuffix
             [for]="picker"
           ></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker #picker startView="month"></mat-datepicker>
         </mat-form-field>
 
         <div class="task-visibility">
-          <mat-form-field>
+          <mat-form-field [hideRequiredMarker]="!_createTask">
             <mat-label><mat-icon>visibility</mat-icon> Visibility</mat-label>
             <mat-select
               formControlName="visibility"
               [value]="visibilities[0].value"
-              [disabled]="_createTask"
             >
               @for (visibility of visibilities; track visibility) {
               <mat-option [value]="visibility.value">{{
@@ -64,21 +81,22 @@
               }}</mat-option>
               }
             </mat-select>
+            @if (taskForm.get('visibility')?.hasError('required') &&
+            taskForm.get('visibility')?.touched) {
+            <mat-error>Please select a visibility type</mat-error>
+            }
           </mat-form-field>
         </div>
 
-        <div class="task-finish" *ngIf="task">
-          <div class="task-finish-info" *ngIf="task?.isFinished">
-            <mat-checkbox [disabled]="true" [checked]="task.isFinished"
-              >Finished</mat-checkbox
-            >
+        <div class="task-form-finish" *ngIf="task">
+          <div class="task-form-finish-info" *ngIf="task?.isFinished">
+            <mat-checkbox formControlName="isFinished">Finished</mat-checkbox>
             <mat-form-field id="finishedDateFormField">
               <mat-label>Finished on</mat-label>
               <input
                 matInput
                 formControlName="finishedOnDate"
                 [matDatepicker]="dpFinished"
-                [disabled]="true"
               />
               <mat-datepicker-toggle
                 matIconSuffix
@@ -99,12 +117,11 @@
       </div>
     </div>
 
-    <div class="task-card-button">
+    <div class="task-form-button">
       <button
         [color]="_createTask ? 'primary' : 'warn'"
         class="action-button"
         type="submit"
-        (click)="!_createTask ? deleteTask() : false"
         mat-flat-button
       >
         {{ _createTask ? "Add" : "Delete" }}

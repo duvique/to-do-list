@@ -1,4 +1,13 @@
-<div class="nav-content-container">
-  <a>Homeee</a>
-</div>
-
+<nav class="nav-content-container">
+  <h1>Menu</h1>
+  <ul>
+    @for (route of navRoutes; track $index) {
+    <li>
+      <a routerLink="{{ route.redirectTo }}" routerLinkActive="nav-active">
+        <mat-icon>{{ route.icon }}</mat-icon>
+        <p>{{ route.title }}</p>
+      </a>
+    </li>
+    }
+  </ul>
+</nav>

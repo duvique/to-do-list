@@ -1,12 +1,11 @@
 .task-detail-container{
-  clip: '';
   display: flex;
   height: 100%;
   flex-direction: column;
   align-items: center;
 }
 
-.task-card{
+.task-form{
   display: flex;
   padding: 2em;
   width: 100%;
@@ -18,22 +17,22 @@
 
 }
 
-.task-card-title{
+.task-form-title{
   display: flex;
   flex-direction: column;
   gap: 2em;
 }
 
-.task-card-title h1{
+.task-form-title h1{
   font-size: 3em;
 }
 
-.task-card-title p{
+.task-form-title p{
   font-size: 1.5em;
   font-weight: bold;
 }
 
-.task-card-body{
+.task-form-body{
   display: flex;
   flex-direction: column;
 }
@@ -42,12 +41,12 @@
   width: min-content;
 }
 
-.task-finish{
+.task-form-finish{
   display: flex;
   gap: 1em;
 }
 
-.task-finish-info{
+.task-form-finish-info{
   display: flex;
   flex-direction: column;
 }
@@ -61,7 +60,7 @@
   width: 100%;
 }
 
-.task-card-button{
+.task-form-button{
   display: flex;
   width: 100%;
   align-items: center;
@@ -71,12 +70,4 @@
 .action-button{
   width: 50%;
   padding: 2rem 0;
-}
-
-
-.loading-container{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
 }

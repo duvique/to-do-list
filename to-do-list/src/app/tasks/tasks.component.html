@@ -1,5 +1,9 @@
-<section class="tasks-container">
-  <div class="tasks-list">
+<section [ngClass]="!tasks ? 'loading-container-tasks' : 'tasks-container'">
+  <ng-template #loading>
+    <mat-spinner></mat-spinner>
+  </ng-template>
+
+  <div class="tasks-list" *ngIf="tasks; else loading">
     <div class="tasks-title">
       <h1>Tasks</h1>
       <p>{{ this.tasks.length }}</p>
@@ -7,18 +11,32 @@
 
     <article class="tasks-table">
       <div class="list-item">
-        <button mat-button class="task-add" (click)="showCreateTask()">
+        <button
+          mat-flat-button
+          class="task-add"
+          (click)="handleAddTask()"
+          [style.color]="createTask ? 'primary' : ''"
+        >
           <mat-icon>add</mat-icon>
           <p>Add new Task</p>
         </button>
       </div>
       @for (item of tasks; track $index) {
       <div class="list-item">
-        <p>{{ item.name }}</p>
+        <div class="list-item-title">
+          <mat-icon
+            [matTooltip]="getIconToolTip(item).tooltip"
+            [style.color]="getIconToolTip(item).iconColor"
+            >{{
+              item.isFinished || !item.dueDate ? "check" : "watch_later"
+            }}</mat-icon
+          >
+          <p>{{ item.name }}</p>
+        </div>
         <button
           mat-icon-button
           (click)="showTaskDetail(item.id)"
-          [ngStyle]="{ color: idTaskDetail == item.id ? 'white' : 'gray' }"
+          [style.color]="idTaskDetail == item.id ? 'var(--hot-red)' : 'gray'"
         >
           <mat-icon>arrow_forward_ios</mat-icon>
         </button>
@@ -30,7 +48,8 @@
     <app-task-detail
       [taskId]="idTaskDetail"
       [createTask]="createTask"
-      (refreshTaskList)="refreshTaskList()"
+      (refreshTaskList)="refreshTaskList($event)"
+      (createdTaskId)="handleCreatedTask($event)"
     ></app-task-detail>
   </div>
 </section>

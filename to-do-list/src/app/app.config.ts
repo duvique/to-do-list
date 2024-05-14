@@ -7,6 +7,7 @@ import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
 } from '@angular/material/core';
+import { provideToastr } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +16,8 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(HttpClientModule),
     provideNativeDateAdapter(),
     [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
+    provideToastr({
+      positionClass: 'toast-top-right',
+    }),
   ],
 };

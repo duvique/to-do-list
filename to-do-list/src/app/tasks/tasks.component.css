@@ -3,6 +3,12 @@
   height: 100%;
   align-items: stretch;
 }
+.loading-container-tasks{
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
 
 .tasks-list{
   display: flex;
@@ -62,6 +68,13 @@
 .list-item p{
   margin: 0;
   font-size: 1.5em;
+  max-width: 230px;
+  word-wrap:break-word;
+}
+
+.list-item-title{
+  display: flex;
+  gap: 2em;
 }
 
 
