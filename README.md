@@ -13,8 +13,6 @@ Projeto feito em inglês
 * Angular CLI
 
 ## :electric_plug: Executando com Node, Visual studio e SQL Server
-Passos necessários para rodar o projeto:
-
 # Backend
 1- Modificar `connection string` do SQL Server no `app.settings.json` do projeto `backend` de acordo com seu servidor <br>
 
