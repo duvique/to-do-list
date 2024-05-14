@@ -11,7 +11,7 @@ namespace ToDoList.Application.Tasks.Queries.GetTasks
         {
             var repository = uow.Repository<ToDoTask>();
 
-            var tasks = (await repository.FindAsync(cancellationToken: cancellationToken))
+            var tasks = (await repository.FindAsync(orderBy: (list) => list.OrderByDescending(t => t.CreatedAt), cancellationToken: cancellationToken))
                 .Select(t => TaskResponse.Map(t));
 
             return Result.Success(tasks);

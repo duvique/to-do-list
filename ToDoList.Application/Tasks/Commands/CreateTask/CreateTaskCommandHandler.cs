@@ -13,7 +13,7 @@ namespace ToDoList.Application.Tasks.Commands.CreateTask
             var repository = uow.Repository<ToDoTask>();
 
             var dueDate = request.DueDate;
-            if (dueDate < DateTime.Now)
+            if (dueDate.HasValue && dueDate.Value.Date < DateTime.Now.Date)
                 return Result.Failure<Guid>(DomainErrors.Tasks.InvalidDueDate);
 
             var toDoTask = new ToDoTask(
@@ -22,7 +22,7 @@ namespace ToDoList.Application.Tasks.Commands.CreateTask
                     request.Description,
                     request.Visibility,
                     request.DueDate
-                );
+            );
 
             await repository.AddAsync(toDoTask, cancellationToken);
 
