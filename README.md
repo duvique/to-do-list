@@ -1,5 +1,5 @@
 # To do List :pencil:
-O projeto consiste em duas branchs:
+O projeto consiste em duas branches:
 * frontend - Website desenvolvido em AngularJS
 * backend - Backend em C# .NET Core, utilizando SQL Server como banco de dados
 
